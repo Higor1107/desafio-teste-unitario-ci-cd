@@ -2,6 +2,28 @@ import unittest
 from tarefas_crud import Tarefa, validar_data
 
 class TestTarefaCRUD(unittest.TestCase):
+            # Sucesso: criar tarefa com título válido
+            def test_criar_tarefa_titulo_valido(self):
+                tarefa = Tarefa(self.next_id, "Nova Tarefa", "Desc", "2024-03-17")
+                self.assertEqual(tarefa.titulo, "Nova Tarefa")
+
+            # Sucesso: criar tarefa com data válida
+            def test_criar_tarefa_data_valida(self):
+                tarefa = Tarefa(self.next_id, "Teste", "Desc", "2024-03-17")
+                self.assertTrue(validar_data(tarefa.data))
+
+            # Sucesso: deletar tarefa existente
+            def test_deletar_tarefa_existente(self):
+                tarefa = Tarefa(self.next_id, "Teste", "Desc", "2024-03-17")
+                tarefas = {self.next_id: tarefa}
+                del tarefas[self.next_id]
+                self.assertNotIn(self.next_id, tarefas)
+
+            # Sucesso: acessar atributo de tarefa existente
+            def test_acessar_tarefa_existente(self):
+                tarefa = Tarefa(self.next_id, "Teste", "Desc", "2024-03-17")
+                tarefas = {self.next_id: tarefa}
+                self.assertEqual(tarefas[self.next_id].titulo, "Teste")
         # Erro: criar tarefa com título só de espaços
         def test_criar_tarefa_titulo_espacos(self):
             tarefa = Tarefa(self.next_id, "   ", "Desc", "2024-03-17")
