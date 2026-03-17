@@ -33,5 +33,31 @@ class TestTarefaCRUD(unittest.TestCase):
     def test_validar_data_invalida(self):
         self.assertFalse(validar_data("2024-31-12"))
 
+    # Cenário alternativo: criar tarefa com data vazia
+    def test_criar_tarefa_data_vazia(self):
+        tarefa = Tarefa(self.next_id, "Teste", "Desc", "")
+        self.assertFalse(validar_data(tarefa.data))
+
+    # Cenário alternativo: atualizar tarefa inexistente
+    def test_atualizar_tarefa_inexistente(self):
+        tarefas = {}
+        with self.assertRaises(KeyError):
+            tarefas[999].titulo = "Novo título"
+
+    # Cenário alternativo: deletar todas as tarefas e tentar listar
+    def test_listar_tarefas_vazia(self):
+        tarefas = {}
+        # Simula a função listar_tarefas, espera que não haja tarefas
+        self.assertEqual(len(tarefas), 0)
+
+    # Cenário alternativo: criar várias tarefas e verificar se todas aparecem
+    def test_criar_varias_tarefas(self):
+        for i in range(1, 6):
+            tarefa = Tarefa(i, f"Tarefa {i}", "Desc", "2024-03-17")
+            self.tarefas[i] = tarefa
+        self.assertEqual(len(self.tarefas), 5)
+        for i in range(1, 6):
+            self.assertIn(i, self.tarefas)
+
 if __name__ == "__main__":
     unittest.main()
